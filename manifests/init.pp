@@ -14,7 +14,7 @@ class influxdb (
   $version                              = $influxdb::params::version,
   $package_name                         = $influxdb::params::package_name,
   $service_name                         = $influxdb::params::service_name,
-  $package_provider                     = $influxdb::params:package_provider,
+  $package_provider                     = $influxdb::params::package_provider,
   $package_source                       = $influxdb::params::package_source,
   $config_path                          = $influxdb::params::config_path,
   $hostname                             = $influxdb::params::hostname,
