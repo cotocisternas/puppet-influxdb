@@ -6,6 +6,8 @@ Puppet::Type.newtype :influxdb_cluster_admin do
     defaultto :present
   end
 
+  autorequire(:service) { 'influxdb' }
+
   validate do
     if self[:ensure] == :present && self[:password].nil?
       raise ArgumentError, "password is required"

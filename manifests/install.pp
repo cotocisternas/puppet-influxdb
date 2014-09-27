@@ -15,17 +15,30 @@ class influxdb::install {
   }
 
   $exec_conditional = 'gem list influxdb | egrep -q "^influxdb "'
-  Exec {
-    path => '/bin:/usr/bin:/usr/local/bin',
-  }
 
-  if $influxdb::ruby {  
+  if $influxdb::ruby_gem {  
     exec { 'install influxdb gem':
+      path    => '/bin:/usr/bin:/usr/local/bin',
       command => 'gem install influxdb',
       unless  => $exec_conditional,
     }
   } else {
     exec { 'uninstall influxdb gem':
+      path    => '/bin:/usr/bin:/usr/local/bin',
+      command => 'gem uninstall influxdb',
+      onlyif  => $exec_conditional,
+    }
+  }
+
+  if $influxdb::sensu_gem {
+    exec { 'install influxdb sensu gem':
+      path    => '/opt/sensu/embedded/bin',
+      command => 'gem install influxdb',
+      unless  => $exec_conditional,
+    }
+  } else {
+    exec { 'uninstall influxdb sensu gem':
+      path    => '/opt/sensu/embedded/bin',
       command => 'gem uninstall influxdb',
       onlyif  => $exec_conditional,
     }

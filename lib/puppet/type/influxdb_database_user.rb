@@ -6,6 +6,8 @@ Puppet::Type.newtype :influxdb_database_user do
     defaultto :present
   end
 
+  autorequire(:service) { 'influxdb' }
+
   validate do
     [:database, :password].each do |param|
       if self[:ensure] == :present && self[param].nil?

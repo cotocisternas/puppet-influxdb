@@ -6,6 +6,8 @@ Puppet::Type.newtype(:influxdb_database) do
     defaultto :present
   end
 
+  autorequire(:service) { 'influxdb' }
+
   newparam :name do
     desc "Database name"
     isnamevar

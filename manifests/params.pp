@@ -8,6 +8,7 @@ class influxdb::params {
 
   $ensure                               = 'installed'
   $ruby_gem                             = false
+  $sensu_gem                            = false
   $version                              = 'latest'
   $config_path                          = '/opt/influxdb/shared/config.toml'
 

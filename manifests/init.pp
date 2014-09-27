@@ -11,6 +11,7 @@
 class influxdb (
   $ensure                               = $influxdb::params::ensure,
   $ruby_gem                             = $influxdb::params::ruby_gem,
+  $sensu_gem                            = $influxdb::params::sensu_gem,
   $version                              = $influxdb::params::version,
   $package_name                         = $influxdb::params::package_name,
   $service_name                         = $influxdb::params::service_name,
