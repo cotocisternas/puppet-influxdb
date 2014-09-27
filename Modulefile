@@ -1,8 +1,10 @@
-name "blom-influxdb"
-version "0.0.1"
-author "Ørjan Blom"
-project_page "https://github.com/blom/puppet-influxdb"
-source "https://github.com/blom/puppet-influxdb"
-license "ISC"
-summary "InfluxDB module"
-description "InfluxDB module"
+name          'puppet-influxdb'
+version       '0.1.0'
+source        'http://github.com/cotocisternas/puppet-influxdb'
+author        'cotocisternas'
+license       'Apache 2.0'
+summary       'influxdb module'
+description   'influxdb module'
+project_page  'https://github.com/cotocisternas/puppet-influxdb'
+
+dependency 'puppetlabs/stdlib'

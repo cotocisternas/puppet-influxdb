@@ -1,12 +1,14 @@
-# = Class: influxdb::service
+# == Class influxdb::service
 #
-# Author: Coto Cisternas <cotocisternas@gmail.com>
+# This class is meant to be called from influxdb
+# It ensure the service is running
+#
 class influxdb::service {
-  service { 'influxdb':
-    ensure      => running,
-    enable      => true,
-    hasrestart  => true,
-    require     => Package['influxdb'],
 
+  service { $influxdb::service_name:
+    ensure     => running,
+    enable     => true,
+    hasstatus  => true,
+    hasrestart => true,
   }
 }

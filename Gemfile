@@ -1,19 +1,20 @@
-source "https://rubygems.org/"
+source "https://rubygems.org"
 
-gem "coveralls", :require => false if RUBY_VERSION.to_f >= 1.9
-gem "influxdb"
-gem "kramdown"
-gem "puppet", ENV["PUPPET_VERSION"]
-gem "puppet-lint"
-gem "puppetlabs_spec_helper"
-gem "rake"
-gem "rspec-puppet"
-gem "simplecov"
-gem "webmock"
-gem "yard"
+group :test do
+  gem "rake"
+  gem "puppet", ENV['PUPPET_VERSION'] || '~> 3.6.0'
+  gem "puppet-lint"
+  gem "rspec-puppet", :git => 'https://github.com/rodjek/rspec-puppet.git'
+  gem "puppet-syntax"
+  gem "puppetlabs_spec_helper"
+end
 
-if RUBY_VERSION.to_f >= 2
-  gem "guard"
-  gem "guard-rspec"
-  gem "guard-shell"
+group :development do
+  gem "travis"
+  gem "travis-lint"
+  gem "beaker"
+  gem "beaker-rspec"
+  gem "vagrant-wrapper"
+  gem "puppet-blacksmith"
+  gem "guard-rake"
 end
