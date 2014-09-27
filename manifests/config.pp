@@ -211,6 +211,6 @@ class influxdb::config {
     ensure  => present,
     path    => $influxdb::config_path,
     notify  => Service[$influxdb::service_name],
-    require => Package[$influxdb::service_package],
+    require => Package[$influxdb::package_name],
   }
 }
