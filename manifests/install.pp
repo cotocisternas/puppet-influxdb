@@ -32,13 +32,13 @@ class influxdb::install {
 
   if $influxdb::sensu_gem {
     exec { 'install influxdb sensu gem':
-      path    => '/opt/sensu/embedded/bin',
+      path    => '/bin:/opt/sensu/embedded/bin',
       command => 'gem install influxdb',
       unless  => $exec_conditional,
     }
   } else {
     exec { 'uninstall influxdb sensu gem':
-      path    => '/opt/sensu/embedded/bin',
+      path    => '/bin:/opt/sensu/embedded/bin',
       command => 'gem uninstall influxdb',
       onlyif  => $exec_conditional,
     }
