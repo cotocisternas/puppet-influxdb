@@ -70,19 +70,11 @@ class influxdb::params {
       $package_name     = 'influxdb'
       $service_name     = 'influxdb'
       $package_provider = 'dpkg'
-      $package_source = $::architecture ? {
-        /64/    => "http://s3.amazonaws.com/influxdb/${influxdb::package_name}_${influxdb::version}_amd64.deb",
-        default => "http://s3.amazonaws.com/influxdb/${influxdb::package_name}_${influxdb::version}_i386.deb",
-      }
     }
     'RedHat', 'Amazon': {
-      $package_name = 'influxdb'
-      $service_name = 'influxdb'
+      $package_name     = 'influxdb'
+      $service_name     = 'influxdb'
       $package_provider = 'rpm'
-      $package_source = $::architecture ? {
-        /64/    => "http://s3.amazonaws.com/influxdb/${influxdb::package_name}-${influxdb::version}-1.x86_64.rpm",
-        default => "http://s3.amazonaws.com/influxdb/${influxdb::package_name}-${influxdb::version}-1.i686.rpm",
-      }
     }
     default: {
       fail("${::operatingsystem} not supported")

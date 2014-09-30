@@ -3,13 +3,33 @@
 # Author: Coto Cisternas <cotocisternas@gmail.com>
 class influxdb::install {
 
+  case $::osfamily {
+    'Debian': {
+      $package_provider = 'dpkg'
+      $package_source = $::architecture ? {
+        /64/    => "http://s3.amazonaws.com/influxdb/${influxdb::package_name}_${influxdb::version}_amd64.deb",
+        default => "http://s3.amazonaws.com/influxdb/${influxdb::package_name}_${influxdb::version}_i386.deb",
+      }
+    }
+    'RedHat', 'Amazon': {
+      $package_provider = 'rpm'
+      $package_source = $::architecture ? {
+        /64/    => "http://s3.amazonaws.com/influxdb/${influxdb::package_name}-${influxdb::version}-1.x86_64.rpm",
+        default => "http://s3.amazonaws.com/influxdb/${influxdb::package_name}-${influxdb::version}-1.i686.rpm",
+      }
+    }
+    default: {
+      fail("${::operatingsystem} not supported")
+    }
+  }
+
   staging::file { 'influxdb-package':
-    source   => $influxdb::package_source,
+    source   => $package_source,
   }
 
   package { $influxdb::package_name:
     ensure   => $influxdb::ensure,
-    provider => $influxdb::package_provider,
+    provider => $package_provider,
     source   => '/opt/staging/influxdb/influxdb-package',
     require  => Staging::File['influxdb-package'],
   }
