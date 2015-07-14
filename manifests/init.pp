@@ -53,8 +53,9 @@ class influxdb (
 
   # validate parameters here
 
+  anchor { 'influxdb:start': } ->
   class { 'influxdb::install': } ->
   class { 'influxdb::config': } ~>
   class { 'influxdb::service': } ->
-  Class['influxdb']
+  anchor { 'influxdb::end': }
 }

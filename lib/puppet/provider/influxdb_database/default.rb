@@ -1,7 +1,6 @@
 require File.expand_path("../../influxdb", __FILE__)
 
-Puppet::Type.type(:influxdb_database).
-             provide(:default, :parent => Puppet::Provider::InfluxDB) do
+Puppet::Type.type(:influxdb_database).provide(:default, :parent => Puppet::Provider::InfluxDB) do
   def create
     influxdb.create_database resource["name"], database_options
   end
