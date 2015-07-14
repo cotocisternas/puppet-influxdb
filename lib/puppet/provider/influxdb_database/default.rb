@@ -1,4 +1,4 @@
-require File.expand_path("../../influxdb", __FILE__)
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'influxdb'))
 
 Puppet::Type.type(:influxdb_database).provide(:default, :parent => Puppet::Provider::InfluxDB) do
   def create

@@ -1,4 +1,4 @@
-require "influxdb"
+require "influxdb" if Puppet.features.influx?
 
 class Puppet::Provider::InfluxDB < Puppet::Provider
   def influxdb

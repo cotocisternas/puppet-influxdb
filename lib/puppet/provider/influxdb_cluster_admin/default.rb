@@ -1,7 +1,6 @@
-require File.expand_path("../../influxdb", __FILE__)
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'influxdb'))
 
-Puppet::Type.type(:influxdb_cluster_admin).
-             provide(:default, :parent => Puppet::Provider::InfluxDB) do
+Puppet::Type.type(:influxdb_cluster_admin).provide(:default, :parent => Puppet::Provider::InfluxDB) do
   def create
     influxdb.create_cluster_admin resource["username"], resource["password"]
   end
