@@ -1,6 +1,8 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'influxdb'))
 
 Puppet::Type.type(:influxdb_database_user).provide(:default, :parent => Puppet::Provider::InfluxDB) do
+  confine :feature => :influxdb
+
   def create
     influxdb.create_database_user resource["database"],
                                   resource["username"],

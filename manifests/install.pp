@@ -39,7 +39,7 @@ class influxdb::install {
   if $influxdb::ruby_gem {  
     exec { 'install influxdb gem':
       path    => '/bin:/usr/bin:/usr/local/bin',
-      command => 'gem install influxdb',
+      command => 'gem install influxdb -v 0.1.8',
       unless  => $exec_conditional,
     }
   } else {
@@ -53,7 +53,7 @@ class influxdb::install {
   if $influxdb::sensu_gem {
     exec { 'install influxdb sensu gem':
       path    => '/bin:/opt/sensu/embedded/bin',
-      command => 'gem install influxdb',
+      command => 'gem install influxdb -v 0.1.8',
       unless  => $exec_conditional,
     }
   } else {
