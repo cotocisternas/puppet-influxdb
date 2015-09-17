@@ -1,0 +1,1 @@
+Puppet.features.add(:influxdb, :libs => ["influxdb"])
