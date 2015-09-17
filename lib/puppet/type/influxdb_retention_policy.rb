@@ -13,9 +13,19 @@ Puppet::Type.newtype :influxdb_retention_policy do
     isnamevar
   end
 
-  newparam :database
-  newparam :duration
-  newparam :replication
-  newparam :default
-  newparam :config
+  newparam :database do
+  end
+  
+  newparam :duration do
+  end
+  
+  newparam :replication do
+  end
+  
+  newparam :default do
+  end
+  
+  newparam :config do
+  end
+  
 end
