@@ -3,7 +3,7 @@ require File.expand_path("../../influxdb", __FILE__)
 Puppet::Type.type(:influxdb_database).
              provide(:default, :parent => Puppet::Provider::InfluxDB) do
   def create
-    influxdb.create_database resource["name"], database_options
+    influxdb.create_database resource["name"]
   end
 
   def destroy
@@ -11,16 +11,7 @@ Puppet::Type.type(:influxdb_database).
   end
 
   def exists?
-    influxdb.get_database_list.any? { |db| db["name"] == resource["name"] }
+    influxdb.list_databases.any? { |db| db["name"] == resource["name"] }
   end
 
-  private
-
-  def database_options
-    {}.tap do |o|
-      if resource["replication_factor"]
-        o["replicationFactor"] = resource["replication_factor"].to_i
-      end
-    end
-  end
 end
