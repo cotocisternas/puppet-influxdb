@@ -24,6 +24,7 @@ class influxdb::params {
 
   # [data]
   $data_dir                             = '/opt/influxdb/shared/data/db'
+  $wal_dir                              = '/opt/influxdb/shared/wal'
 
   # [admin]
   $admin_enabled                        = 'true'

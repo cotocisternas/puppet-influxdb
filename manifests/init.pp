@@ -20,6 +20,7 @@ class influxdb (
   $hostname                             = $influxdb::params::hostname,
   $bind_address                         = $influxdb::params::bind_address,
   $data_dir                             = $influxdb::params::data_dir,
+  $wal_dir                              = $influxdb::params::wal_dir,
   $admin_enabled                        = $influxdb::params::admin_enabled,
   $hinted_handoff_dir                   = $influxdb::params::hinted_handoff_dir,
 ) inherits influxdb::params {
