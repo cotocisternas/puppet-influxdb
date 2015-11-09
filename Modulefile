@@ -1,5 +1,5 @@
 name          'puppet-influxdb'
-version       '0.1.0'
+version       '0.1.1'
 source        'http://github.com/cotocisternas/puppet-influxdb'
 author        'cotocisternas'
 license       'Apache 2.0'
