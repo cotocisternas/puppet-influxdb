@@ -18,7 +18,7 @@ reporting-disabled = false
 [meta]
   dir = "<%= @meta_dir %>"
   hostname = "<%= @hostname %>"
-  bind-address = "<%= @bind_address %>"
+  bind-address = "<%= @bind_address %>:8088"
   retention-autocreate = <%= @meta_retention_autocreate %>
   election-timeout = "<%= @meta_election_timeout %>"
   heartbeat-timeout = "<%= @meta_heartbeat_timeout %>"
@@ -62,7 +62,7 @@ reporting-disabled = false
 
 [admin]
   enabled = <%= @admin_enabled %>
-  bind-address = ":8083"
+  bind-address = "<%= @bind_address %>:8083"
 
 ###
 ### [http]
@@ -73,7 +73,7 @@ reporting-disabled = false
 
 [http]
   enabled = true
-  bind-address = ":8086"
+  bind-address = "<%= @bind_address %>:8086"
   auth-enabled = false
   log-enabled = true
   write-tracing = false

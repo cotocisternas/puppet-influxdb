@@ -13,10 +13,6 @@ Puppet::Type.newtype(:influxdb_database) do
     isnamevar
   end
 
-  newparam :replication_factor do
-    desc "Replication factor"
-  end
-
   newparam :config do
   end
 end

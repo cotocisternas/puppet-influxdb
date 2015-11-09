@@ -1,7 +1,8 @@
 require File.expand_path("../../influxdb", __FILE__)
 
-Puppet::Type.type(:influxdb_database_user).
-             provide(:default, :parent => Puppet::Provider::InfluxDB) do
+Puppet::Type.type(:influxdb_database_user).provide(:default, :parent => Puppet::Provider::InfluxDB) do
+  confine :feature => :influxdb
+  
   def create
     influxdb.create_database_user resource["database"],
                                   resource["username"],
@@ -13,8 +14,8 @@ Puppet::Type.type(:influxdb_database_user).
   end
 
   def exists?
-    influxdb.get_database_user_list(resource["database"]).any? do |user|
-      user["name"] == resource["username"]
+    influxdb.list_users.any? do |user|
+      user["username"] == resource["username"]
     end
   end
 end
