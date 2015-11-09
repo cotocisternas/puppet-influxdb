@@ -9,7 +9,7 @@ class influxdb::params {
   $ensure                               = 'installed'
   $ruby_gem                             = false
   $sensu_gem                            = false
-  $version                              = 'latest'
+  $version                              = '0.8.9'
   $config_path                          = '/opt/influxdb/shared/config.toml'
 
   $hostname                             = $::hostname
