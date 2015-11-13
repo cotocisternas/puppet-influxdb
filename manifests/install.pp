@@ -42,12 +42,6 @@ class influxdb::install {
       command => 'gem install influxdb',
       unless  => $exec_conditional,
     }
-  } else {
-    exec { 'uninstall influxdb gem':
-      path    => '/bin:/usr/bin:/usr/local/bin',
-      command => 'gem uninstall influxdb',
-      onlyif  => $exec_conditional,
-    }
   }
 
   if $influxdb::sensu_gem {
@@ -55,12 +49,6 @@ class influxdb::install {
       path    => '/bin:/opt/sensu/embedded/bin',
       command => 'gem install influxdb',
       unless  => $exec_conditional,
-    }
-  } else {
-    exec { 'uninstall influxdb sensu gem':
-      path    => '/bin:/opt/sensu/embedded/bin',
-      command => 'gem uninstall influxdb',
-      onlyif  => $exec_conditional,
     }
   }
 }
