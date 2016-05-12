@@ -36,10 +36,10 @@ class influxdb::install {
 
   $exec_conditional = 'gem list influxdb | egrep -q "^influxdb "'
 
-  if $influxdb::ruby_gem {  
+  if $influxdb::ruby_gem {
     exec { 'install influxdb gem':
       path    => '/bin:/usr/bin:/usr/local/bin',
-      command => 'gem install influxdb',
+      command => 'gem install influxdb -v 0.2.3',
       unless  => $exec_conditional,
     }
   }
@@ -47,7 +47,7 @@ class influxdb::install {
   if $influxdb::sensu_gem {
     exec { 'install influxdb sensu gem':
       path    => '/bin:/opt/sensu/embedded/bin',
-      command => 'gem install influxdb',
+      command => 'gem install influxdb -v 0.2.3',
       unless  => $exec_conditional,
     }
   }
