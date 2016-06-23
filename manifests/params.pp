@@ -9,7 +9,7 @@ class influxdb::params {
   $ensure                               = 'installed'
   $ruby_gem                             = false
   $sensu_gem                            = false
-  $version                              = '0.9.4.2'
+  $version                              = '0.13.0'
   $config_path                          = '/etc/opt/influxdb/influxdb.conf'
 
   # [meta]
