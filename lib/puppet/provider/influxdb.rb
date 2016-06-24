@@ -8,7 +8,7 @@ class Puppet::Provider::InfluxDB < Puppet::Provider
   private
 
   def config
-    return {} unless resource["config"].is_a? Hash
-    Hash[resource["config"].map { |key, value| [key.to_sym, value] }]
+    return {} unless resource[:config].is_a? Hash
+    Hash[resource[:config].map { |key, value| [key.to_sym, value] }]
   end
 end

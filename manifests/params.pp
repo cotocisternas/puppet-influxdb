@@ -14,6 +14,7 @@ class influxdb::params {
   $ruby_gem                                     = false
   $gem_version                                  = '0.3.5'
   $config_path                                  = '/etc/influxdb/influxdb.conf'
+  $base_path                                    = '/opt/influxdb'
   $user                                         = 'influxdb'
   $group                                        = 'influxdb'
 
@@ -25,15 +26,15 @@ class influxdb::params {
   $hostname                                     = $::hostname
 
   #[meta]
-  $meta_dir                                     = "/opt/influxdb/meta"
+  $meta_dir                                     = "${base_path}/meta"
   $retention_autocreate                         = true
   $logging_enabled                              = true
   $pprof_enabled                                = false
   $lease_duration                               = "1m0s"
 
   #[data]
-  $data_dir                                     = "/opt/influxdb/data"
-  $data_wal_dir                                 = "/opt/influxdb/wal"
+  $data_dir                                     = "${base_path}/data"
+  $data_wal_dir                                 = "${base_path}/wal"
   $data_engine                                  = "tsm1"
   $data_cache_max_memory_size                   = "524288000"
   $data_cache_snapshot_memory_size              = "26214400"
@@ -75,7 +76,7 @@ class influxdb::params {
   $http_bind_address                            = ":8086"
   $http_auth_enabled                            = false
   $http_log_enabled                             = true
-  $http_write_tracing                           = true
+  $http_write_tracing                           = false
   $http_pprof_enabled                           = false
   $http_https_enabled                           = false
   $http_https_certificate                       = "/etc/ssl/influxdb.pem"

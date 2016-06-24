@@ -1,5 +1,5 @@
-Puppet::Type.newtype :influxdb_retention_policy do
-  @doc = "Manage InfluxDB retention policy"
+Puppet::Type.newtype :influxdb_continuous_queries do
+  @doc = "Manage InfluxDB Continuous Queries"
   ensurable do
     newvalue(:present) { provider.create }
     newvalue(:absent) { provider.destroy }
@@ -15,13 +15,13 @@ Puppet::Type.newtype :influxdb_retention_policy do
   newparam :database do
   end
 
-  newparam :duration do
+  newparam :query do
   end
 
-  newparam :replication do
+  newparam :resample_every do
   end
 
-  newparam :default do
+  newparam :resample_for do
   end
 
   newparam :config do

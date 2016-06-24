@@ -21,7 +21,7 @@ class influxdb::install {
     if $influxdb::ruby_gem {
       exec { 'install influxdb gem':
         path    => '/bin:/usr/bin:/usr/local/bin',
-        command => "gem remove influxdb -v ${influxdb::gem_version}",
+        command => "gem uninstall influxdb -v ${influxdb::gem_version}",
         onlyif  => $_exec_conditional,
       }
     }

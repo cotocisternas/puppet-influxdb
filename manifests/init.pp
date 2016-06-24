@@ -20,6 +20,7 @@ class influxdb (
   $service_name                               = $influxdb::params::service_name,
   $repo_key_id                                = $influxdb::params::repo_key_id,
   $repo_key_source                            = $influxdb::params::repo_key_source,
+  $base_path                                  = $influxdb::params::base_path,
   $config_path                                = $influxdb::params::config_path,
   $user                                       = $influxdb::params::user,
   $group                                      = $influxdb::params::group,
@@ -126,6 +127,5 @@ class influxdb (
     Anchor['influxdb::begin']
     -> Class['influxdb::install']
   }
-
 
 }
