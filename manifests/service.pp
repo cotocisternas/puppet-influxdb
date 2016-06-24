@@ -9,8 +9,8 @@ class influxdb::service {
   service { $influxdb::service_name:
     ensure      => running,
     enable      => true,
-    # hasstatus  => true,
+    hasstatus   => true,
     hasrestart  => true,
-    require     => Package[$influxdb::package_name], 
+    require     => Package[$influxdb::package_name],
   }
 }

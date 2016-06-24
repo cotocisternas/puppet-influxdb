@@ -6,42 +6,94 @@
 # Author: Coto Cisternas <cotocisternas@gmail.com>
 class influxdb::params {
 
-  $ensure                               = 'installed'
-  $ruby_gem                             = false
-  $sensu_gem                            = false
-  $version                              = '0.13.0'
-  $config_path                          = '/etc/opt/influxdb/influxdb.conf'
+  $ensure                                       = 'present'
+  $autoupgrade                                  = false
+  $package_pin                                  = false
+  $repo_key_id                                  = '05CE15085FC09D18E99EFB22684A14CF2582E0C5'
+  $repo_key_source                              = 'https://repos.influxdata.com/influxdb.key'
+  $ruby_gem                                     = false
+  $gem_version                                  = '0.3.5'
+  $config_path                                  = '/etc/influxdb/influxdb.conf'
+  $user                                         = 'influxdb'
+  $group                                        = 'influxdb'
 
-  # [meta]
-  $hostname                             = $::hostname
-  $bind_address                         = '0.0.0.0'
-  $meta_dir                             = '/opt/influxdb/meta'
-  $meta_retention_autocreate            = 'true'
-  $meta_election_timeout                = '1s'
-  $meta_heartbeat_timeout               = '1s'
-  $meta_leader_lease_timeout            = '500ms'
-  $meta_commit_timeout                  = '50ms'
+  $influxdb_stderr_log                          = '/var/log/influxdb/influxd.log'
+  $influxdb_stdout_log                          = '/dev/null'
+  $influxd_opts                                 = undef
 
-  # [data]
-  $data_dir                             = '/opt/influxdb/shared/data/db'
-  $wal_dir                              = '/opt/influxdb/shared/wal'
+  $reporting_disabled                           = false
+  $hostname                                     = $::hostname
 
-  # [admin]
-  $admin_enabled                        = 'true'
+  #[meta]
+  $meta_dir                                     = "/opt/influxdb/meta"
+  $retention_autocreate                         = true
+  $logging_enabled                              = true
+  $pprof_enabled                                = false
+  $lease_duration                               = "1m0s"
 
-  # [hinted-handoff]
-  $hinted_handoff_dir                   = '/opt/influxdb/hh'
+  #[data]
+  $data_dir                                     = "/opt/influxdb/data"
+  $data_wal_dir                                 = "/opt/influxdb/wal"
+  $data_engine                                  = "tsm1"
+  $data_cache_max_memory_size                   = "524288000"
+  $data_cache_snapshot_memory_size              = "26214400"
+  $data_cache_snapshot_write_cold_duration      = "1h0m0s"
+  $data_compact_full_write_cold_duration        = "24h0m0s"
+  $data_max_points_per_block                    = "0"
+  $data_logging_enabled                         = "true"
+  $data_query_log_enabled                       = "true"
+  $data_wal_logging_enabled                     = "true"
+
+  #[cluster] // TODO
+
+  #[retention]
+  $retention                                    = true
+  $retention_check_interval                     = "30m0s"
+
+  #[shard-precreation]
+  $shard_precreation                            = true
+  $shard_check_interval                         = "10m0s"
+  $shard_advance_period                         = "30m0s"
+
+  #[admin]
+  $admin_enabled                                = true
+  $admin_bind_address                           = ":8083"
+  $admin_https_enabled                          = false
+  $admin_https_certificate                      = "/etc/ssl/influxdb.pem"
+  $admin_version                                = undef
+
+  #[monitor]
+  $monitor_enabled                              = true
+  $monitor_database                             = "_internal"
+  $monitor_interval                             = "10s"
+
+  #[subscriber]
+  $subscriber_enabled                           = true
+
+  #[http]
+  $http_enabled                                 = true
+  $http_bind_address                            = ":8086"
+  $http_auth_enabled                            = false
+  $http_log_enabled                             = true
+  $http_write_tracing                           = true
+  $http_pprof_enabled                           = false
+  $http_https_enabled                           = false
+  $http_https_certificate                       = "/etc/ssl/influxdb.pem"
+  $http_max_row_limit                           = "10000"
+
+  $graphite_options                             = undef
+  $collectd_options                             = undef
+  $opentsdb_options                             = undef
+  $udp_options                                  = undef
+
+  $continuous_queries_enabled                   = true
+  $continuous_queries_log_enabled               = true
+  $continuous_queries_run_interval              = undef
 
   case $::osfamily {
     'Debian': {
       $package_name     = 'influxdb'
       $service_name     = 'influxdb'
-      $package_provider = 'dpkg'
-    }
-    'RedHat', 'Amazon': {
-      $package_name     = 'influxdb'
-      $service_name     = 'influxdb'
-      $package_provider = 'rpm'
     }
     default: {
       fail("${::operatingsystem} not supported")

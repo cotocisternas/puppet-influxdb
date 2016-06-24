@@ -1,169 +1,207 @@
-### Welcome to the InfluxDB configuration file.
-
-# Once every 24 hours InfluxDB will report anonymous data to m.influxdb.com
-# The data includes raft id (random 8 bytes), os, arch, version, and metadata.
-# We don't track ip addresses of servers reporting. This is only used
-# to track the number of instances running and the versions, which
-# is very helpful for us.
-# Change this option to true to disable reporting.
-reporting-disabled = false
-
-###
-### [meta]
-###
-### Controls the parameters for the Raft consensus group that stores metadata
-### about the InfluxDB cluster.
-###
+reporting-disabled = <%= @reporting_disabled %>
+hostname = "<%= @hostname %>"
 
 [meta]
   dir = "<%= @meta_dir %>"
-  hostname = "<%= @hostname %>"
-  bind-address = "<%= @bind_address %>:8088"
-  retention-autocreate = <%= @meta_retention_autocreate %>
-  election-timeout = "<%= @meta_election_timeout %>"
-  heartbeat-timeout = "<%= @meta_heartbeat_timeout %>"
-  leader-lease-timeout = "<%= @meta_leader_lease_timeout %>"
-  commit-timeout = "<%= @meta_commit_timeout %>"
-
-###
-### [data]
-###
-### Controls where the actual shard data for InfluxDB lives.
-###
+  retention-autocreate = <%= @retention_autocreate %>
+  logging-enabled = true
+  pprof-enabled = false
+  lease-duration = "1m0s"
 
 [data]
   dir = "<%= @data_dir %>"
-  wal-dir = "<%= @wal_dir %>"
-
-###
-### [cluster]
-###
-### Controls non-Raft cluster behavior, which generally includes how data is
-### shared across shards.
-###
+  wal-dir = "<%= @data_wal_dir %>"
+  engine = "<%= @data_engine %>"
+  cache-max-memory-size = <%= @data_cache_max_memory_size %>
+  cache-snapshot-memory-size = <%= @data_cache_snapshot_memory_size %>
+  cache-snapshot-write-cold-duration = "<%= @data_cache_snapshot_write_cold_duration %>"
+  compact-full-write-cold-duration = "<%= @data_compact_full_write_cold_duration %>"
+  max-points-per-block = <%= @data_max_points_per_block %>
+  data-logging-enabled = <%= @data_logging_enabled %>
+  query-log-enabled = <%= @data_query_log_enabled %>
+  wal-logging-enabled = <%= @data_wal_logging_enabled %>
 
 [cluster]
+  force-remote-mapping = false
+  write-timeout = "10s"
   shard-writer-timeout = "5s"
-
-###
-### [retention]
-###
-### Controls the enforcement of retention policies for evicting old data.
-###
+  max-remote-write-connections = 3
+  shard-mapper-timeout = "5s"
+  max-concurrent-queries = 0
+  query-timeout = "0"
+  log-queries-after = "0"
+  max-select-point = 0
+  max-select-series = 0
+  max-select-buckets = 0
 
 [retention]
-  enabled = true
-  check-interval = "10m"
+  enabled = <%= @retention %>
+  check-interval = "<%= @retention_check_interval %>"
 
-###
-### [admin]
-###
-### Controls the availability of the built-in, web-based admin interface.
-###
+[shard-precreation]
+  enabled = <%= @shard_precreation %>
+  check-interval = "<%= @shard_check_interval %>"
+  advance-period = "<%= @shard_advance_period %>"
 
 [admin]
   enabled = <%= @admin_enabled %>
-  bind-address = "<%= @bind_address %>:8083"
+  bind-address = "<%= @admin_bind_address %>"
+  https-enabled = <%= @admin_https_enabled %>
+  https-certificate = "<%= @admin_https_certificate %>"
+  Version = "<%= @admin_version %>"
 
-###
-### [http]
-###
-### Controls how the HTTP endpoints are configured. These are the primary
-### mechanism for getting data into and out of InfluxDB.
-###
+[monitor]
+  store-enabled = <%= @monitor_enabled %>
+  store-database = "<%= @monitor_database %>"
+  store-interval = "<%= @monitor_interval %>"
+
+[subscriber]
+  enabled = <%= @subscriber_enabled %>
 
 [http]
-  enabled = true
-  bind-address = "<%= @bind_address %>:8086"
-  auth-enabled = false
-  log-enabled = true
-  write-tracing = false
-  pprof-enabled = false
+  enabled = <%= @http_enabled %>
+  bind-address = "<%= @http_bind_address %>"
+  auth-enabled = <%= @http_auth_enabled %>
+  log-enabled = <%= @http_log_enabled %>
+  write-tracing = <%= @http_write_tracing %>
+  pprof-enabled = <%= @http_pprof_enabled %>
+  https-enabled = <%= @http_https_enabled %>
+  https-certificate = "<%= @http_https_certificate %>"
+  max-row-limit = <%= @http_max_row_limit %>
 
-###
-### [[graphite]]
-###
-### Controls one or many listeners for Graphite data.
-###
+  <% if @graphite_options and ! @graphite_options.empty? -%>
+  <% if @graphite_options.is_a?(Hash) -%>
+  [[graphite]]
+  <% @graphite_options.keys.sort.each do |key| -%>
+  <% val = @graphite_options[key]
+    if key == 'templates' and val.is_a?(Array) -%>
+    templates = [
+    <%- val.each do |template| -%>
+      "<%=template %>",
+    <%- end -%>
+    ]
+  <% elsif val.is_a?(Array) or val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
+    <%=key %> = <%=val %>
+  <% else -%>
+    <%=key %> = "<%=val %>"
+  <% end -%>
+  <% end -%>
+  <% elsif @graphite_options.is_a?(Array) -%>
+  <% @graphite_options.each do |option| -%>
+  [[graphite]]
+  <% @options.key.sort.each do |key| -%>
+  <% val = @options[key]
+    if key == 'templates' and val.is_a?(Array) -%>
+    templates = [
+    <%- val.each do |template| -%>
+      "<%=template %>",
+    <%- end -%>
+    ]
+  <% elsif val.is_a?(Array) or val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
+    <%=key %> = <%=val %>
+  <% else -%>
+    <%=key %> = "<%=val %>"
+  <% end -%>
+  <% end -%>
+  <% end -%>
+  <% end -%>
+  <% else -%>
+  [[graphite]]
+    enabled = false
+  <% end -%>
 
-[[graphite]]
-  enabled = false
-  # bind-address = ":2003"
-  # protocol = "tcp"
-  # consistency-level = "one"
-  # name-separator = "."
-  # name-position = "last"
+  <% if @collectd_options and ! @collectd_options.empty? -%>
+  <% if @collectd_options.is_a?(Hash) -%>
+  [[collectd]]
+  <% @collectd_options.keys.sort.each do |key| -%>
+  <% val = @collectd_options[key]
+    if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
+    <%=key %> = <%=val %>
+  <% else -%>
+    <%=key %> = "<%=val %>"
+  <% end -%>
+  <% end -%>
+  <% elsif @collectd_options.is_a?(Array) -%>
+  <% @collectd_options.each do |option| -%>
+  [[collectd]]
+  <% option.keys.sort.each do |key| -%>
+  <% val = @option[key]
+    if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
+    <%=key %> = <%=val %>
+  <% else -%>
+    <%=key %> = "<%=val %>"
+  <% end -%>
+  <% end -%>
+  <% end -%>
+  <% end -%>
+  <% else -%>
+  [[collectd]]
+    enabled = false
+  <% end -%>
 
-###
-### [collectd]
-###
-### Controls the listener for collectd data.
-###
+  <% if @opentsdb_options and ! @opentsdb_options.empty? -%>
+  <% if @opentsdb_options.is_a?(Hash) -%>
+  [[opentsdb]]
+  <% @opentsdb_options.keys.sort.each do |key|
+     val = @opentsdb_options[key]
+    -%>
+  <% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
+    <%=key %> = <%=val %>
+  <% else -%>
+    <%=key %> = "<%=val %>"
+  <% end -%>
+  <% end -%>
+  <% elsif @opentsdb_options.is_a?(Array) -%>
+  <% @opentsdb_options.each do |option| -%>
+  [[opentsdb]]
+  <% option.keys.sort.each do |key|
+     val = @option[key]
+    -%>
+  <% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
+    <%=key %> = <%=val %>
+  <% else -%>
+    <%=key %> = "<%=val %>"
+  <% end -%>
+  <% end -%>
+  <% end -%>
+  <% end -%>
+  <% else -%>
+  [[opentsdb]]
+    enabled = false
+  <% end -%>
 
-[collectd]
-  enabled = false
-  # bind-address = ""
-  # database = ""
-  # typesdb = ""
-
-###
-### [opentsdb]
-###
-### Controls the listener for OpenTSDB data.
-###
-
-[opentsdb]
-  enabled = false
-  # bind-address = ""
-  # database = ""
-  # retention-policy = ""
-
-###
-### [udp]
-###
-### Controls the listener for InfluxDB line protocol data via UDP.
-###
-
-[[udp]]
-  enabled = false
-  # bind-address = ""
-  # database = ""
-  # batch-size = 0
-  # batch-timeout = "0"
-
-###
-### [monitoring]
-###
-
-[monitoring]
-  enabled = true
-  write-interval = "24h"
-
-###
-### [continuous_queries]
-###
-### Controls how continuous queries are run within InfluxDB.
-###
+  <% if @udp_options and ! @udp_options.empty? -%>
+  <% if @udp_options.is_a?(Hash) -%>
+  [[udp]]
+  <% @udp_options.keys.sort.each do |key|
+     val =  @udp_options[key]
+     -%>
+  <% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
+    <%=key %> = <%=val %>
+  <% else -%>
+    <%=key %> = "<%=val %>"
+  <% end -%>
+  <% end -%>
+  <% elsif @udp_options.is_a?(Array) -%>
+  <% @udp_options.each do |option| -%>
+  [[udp]]
+  <% option.keys.sort.each do |key|
+   val = option[key]
+    -%>
+  <% if val =~ /^(true|false|[0-9]+)$/ or val.is_a?(TrueClass) or val.is_a?(FalseClass) or val.is_a?(Fixnum) -%>
+    <%=key %> = <%=val %>
+  <% else -%>
+    <%=key %> = "<%=val %>"
+  <% end -%>
+  <% end -%>
+  <% end -%>
+  <% end -%>
+  <% else -%>
+  [[udp]]
+    enabled = false
+  <% end -%>
 
 [continuous_queries]
-  enabled = true
-  recompute-previous-n = 2
-  recompute-no-older-than = "10m"
-  compute-runs-per-interval = 10
-  compute-no-more-than = "2m"
-
-###
-### [hinted-handoff]
-###
-### Controls the hinted handoff feature, which allows nodes to temporarily
-### store queued data when one node of a cluster is down for a short period
-### of time.
-###
-
-[hinted-handoff]
-  enabled = true
-  dir = "<%= @hinted_handoff_dir %>"
-  max-size = 1073741824
-  max-age = "168h"
-  retry-rate-limit = 0
-  retry-interval = "1s"
+  enabled = <%= @continuous_queries_enabled %>
+  log-enabled = <%= @continuous_queries_log_enabled %>
+  run-interval = "<%= @continuous_queries_run_interval %>"
