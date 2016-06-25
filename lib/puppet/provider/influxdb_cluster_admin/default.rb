@@ -13,7 +13,7 @@ Puppet::Type.type(:influxdb_cluster_admin).provide(:default, :parent => Puppet::
 
   def exists?
     influxdb.get_cluster_admin_list.any? do |admin|
-      admin[:username] == resource[:username]
+      admin["username"] == resource[:username]
     end
   end
 end

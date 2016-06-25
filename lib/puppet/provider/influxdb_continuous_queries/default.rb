@@ -18,6 +18,6 @@ Puppet::Type.type(:influxdb_continuous_queries).provide(:default, :parent => Pup
   end
 
   def exists?
-    influxdb.list_continuous_queries(resource[:database]).any? { |query| query[:name] == resource[:name] }
+    influxdb.list_continuous_queries(resource[:database]).any? { |query| query["name"] == resource[:name] }
   end
 end

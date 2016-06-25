@@ -16,6 +16,6 @@ Puppet::Type.type(:influxdb_retention_policy).provide(:default, :parent => Puppe
   end
 
   def exists?
-    influxdb.list_retention_policies(resource[:database]).any? { |policy| policy[:name] == resource[:name] }
+    influxdb.list_retention_policies(resource[:database]).any? { |policy| policy["name"] == resource[:name] }
   end
 end

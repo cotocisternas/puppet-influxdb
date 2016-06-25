@@ -12,7 +12,7 @@ Puppet::Type.type(:influxdb_database).provide(:default, :parent => Puppet::Provi
   end
 
   def exists?
-    influxdb.list_databases.any? { |db| db[:name] == resource[:name] }
+    influxdb.list_databases.any? { |db| db["name"] == resource[:name] }
   end
 
 end
