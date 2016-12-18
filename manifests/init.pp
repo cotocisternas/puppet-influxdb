@@ -92,7 +92,7 @@ class influxdb (
   anchor {'influxdb::begin': }
 
   # validate parameters here
-  if ! ($ensure in [ 'present', 'absent' ]) {
+  if ! ($ensure in [ 'present', 'absent', 'purged' ]) {
     fail("\"${ensure}\" is not a valid ensure parameter value")
   }
   validate_bool($autoupgrade)
