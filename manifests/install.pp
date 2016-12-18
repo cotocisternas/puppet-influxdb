@@ -9,7 +9,7 @@ class influxdb::install {
 
     if $influxdb::ruby_gem {
       exec { 'install influxdb gem':
-        path    => '/bin:/usr/bin:/usr/local/bin',
+        path    => '/opt/puppetlabs/puppet/bin:/bin:/usr/bin:/usr/local/bin',
         command => "gem install influxdb -v ${influxdb::gem_version}",
         unless  => $_exec_conditional,
       }
@@ -20,7 +20,7 @@ class influxdb::install {
 
     if $influxdb::ruby_gem {
       exec { 'install influxdb gem':
-        path    => '/bin:/usr/bin:/usr/local/bin',
+        path    => '/opt/puppetlabs/puppet/bin:/bin:/usr/bin:/usr/local/bin',
         command => "gem uninstall influxdb -v ${influxdb::gem_version}",
         onlyif  => $_exec_conditional,
       }

@@ -12,7 +12,7 @@ class influxdb::params {
   $repo_key_id                                  = '05CE15085FC09D18E99EFB22684A14CF2582E0C5'
   $repo_key_source                              = 'https://repos.influxdata.com/influxdb.key'
   $ruby_gem                                     = false
-  $gem_version                                  = '0.3.5'
+  $gem_version                                  = '0.3.13'
   $config_path                                  = '/etc/influxdb/influxdb.conf'
   $base_path                                    = '/opt/influxdb'
   $user                                         = 'influxdb'
